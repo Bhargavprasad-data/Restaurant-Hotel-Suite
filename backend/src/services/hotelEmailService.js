@@ -14,7 +14,16 @@ const smtpFrom = process.env.SMTP_FROM || '"Tasty Bites & Suites" <noreply@tasty
 const resendApiKey = process.env.RESEND_API_KEY;
 const resendFrom = process.env.RESEND_FROM || '"Tasty Suites" <onboarding@resend.dev>';
 
-if (resendApiKey) {
+const emailJsServiceId = process.env.EMAILJS_SERVICE_ID;
+const emailJsTemplateId = process.env.EMAILJS_TEMPLATE_ID;
+const emailJsPublicKey = process.env.EMAILJS_PUBLIC_KEY;
+const emailJsPrivateKey = process.env.EMAILJS_PRIVATE_KEY;
+
+const isEmailJsConfigured = !!(emailJsServiceId && emailJsTemplateId && emailJsPublicKey && emailJsPrivateKey);
+
+if (isEmailJsConfigured) {
+  console.log('✉️  EmailJS Service API configured successfully.');
+} else if (resendApiKey) {
   console.log('✉️  Resend Email Service API configured successfully.');
 } else if (smtpHost && smtpUser && smtpPass) {
   try {
@@ -32,8 +41,64 @@ if (resendApiKey) {
     console.error('⚠️  Failed to initialize Nodemailer SMTP transporter:', err.message);
   }
 } else {
-  console.log('ℹ️  SMTP credentials and Resend API key missing in .env. Hotel Email notifications will run in Simulator Mode (logged to console).');
+  console.log('ℹ️  SMTP credentials, Resend key, and EmailJS credentials missing in .env. Hotel Email notifications will run in Simulator Mode (logged to console).');
 }
+
+// Helper: Send email via EmailJS HTTP API (Port 443, bypassed by Render port blocks)
+const sendViaEmailJs = async (to, subject, htmlContent) => {
+  const payload = {
+    service_id: emailJsServiceId,
+    template_id: emailJsTemplateId,
+    user_id: emailJsPublicKey,
+    accessToken: emailJsPrivateKey,
+    template_params: {
+      to_email: to,
+      subject: subject,
+      body_html: htmlContent
+    }
+  };
+
+  if (typeof fetch === 'function') {
+    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const text = await response.text();
+    if (!response.ok) {
+      throw new Error(text || `HTTP error! status: ${response.status}`);
+    }
+    return text;
+  } else {
+    return new Promise((resolve, reject) => {
+      const reqData = JSON.stringify(payload);
+      const req = https.request({
+        hostname: 'api.emailjs.com',
+        path: '/api/v1.0/email/send',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(reqData)
+        }
+      }, (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve(body);
+          } else {
+            reject(new Error(body || `HTTP error! status: ${res.statusCode}`));
+          }
+        });
+      });
+      req.on('error', reject);
+      req.write(reqData);
+      req.end();
+    });
+  }
+};
 
 // Helper: Send email via Resend HTTP API (Port 443, bypassed by Render port blocks)
 const sendViaResend = async (to, subject, htmlContent) => {
@@ -95,6 +160,18 @@ const sendViaResend = async (to, subject, htmlContent) => {
 
 // Helper: send HTML email or print mock to console
 const sendMailHelper = async (to, subject, htmlContent) => {
+  if (isEmailJsConfigured) {
+    try {
+      await sendViaEmailJs(to, subject, htmlContent);
+      console.log(`✉️  EmailJS: Email successfully sent to ${to} [Subject: "${subject}"]`);
+      return { sent: true, mock: false };
+    } catch (error) {
+      console.error(`❌ EmailJS send failed. Falling back to logging:`, error.message);
+      printMockEmail(to, subject, htmlContent);
+      return { sent: true, mock: true, error: error.message };
+    }
+  }
+
   if (resendApiKey) {
     try {
       await sendViaResend(to, subject, htmlContent);
