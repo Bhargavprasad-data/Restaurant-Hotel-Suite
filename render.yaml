@@ -48,10 +48,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
-        fromService:
-          type: web
-          name: restaurant-suite-backend
-          property: renderExternalUrl
+        value: https://restaurant-suite-backend.onrender.com
 
   # 4. Waiter Dashboard
   - type: web
@@ -63,10 +60,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
-        fromService:
-          type: web
-          name: restaurant-suite-backend
-          property: renderExternalUrl
+        value: https://restaurant-suite-backend.onrender.com
 
   # 5. Kitchen Dashboard
   - type: web
@@ -78,10 +72,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
-        fromService:
-          type: web
-          name: restaurant-suite-backend
-          property: renderExternalUrl
+        value: https://restaurant-suite-backend.onrender.com
 
   # 6. Hotel Customer Dashboard
   - type: web
@@ -93,10 +84,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
-        fromService:
-          type: web
-          name: restaurant-suite-backend
-          property: renderExternalUrl
+        value: https://restaurant-suite-backend.onrender.com
 
   # 7. Hotel Admin Dashboard
   - type: web
@@ -108,7 +96,4 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
-        fromService:
-          type: web
-          name: restaurant-suite-backend
-          property: renderExternalUrl
+        value: https://restaurant-suite-backend.onrender.com
