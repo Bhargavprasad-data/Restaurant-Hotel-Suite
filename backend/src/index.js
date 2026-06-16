@@ -91,11 +91,31 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Auto-seed database if tables don't exist
+async function autoSeedDatabase() {
+  try {
+    const { pool } = require('./config/db');
+    const res = await pool.query("SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'users' LIMIT 1;");
+    if (res.rowCount === 0) {
+      console.log('📡 Database tables not found. Running auto-seeding...');
+      const { execSync } = require('child_process');
+      execSync('npm run seed', { stdio: 'inherit' });
+      console.log('🎉 Database successfully seeded!');
+    } else {
+      console.log('✅ Database tables verified. Skipping seeding.');
+    }
+  } catch (err) {
+    console.error('❌ Database verification/auto-seed failed:', err);
+  }
+}
+
 // Launch server
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`🚀 Smart Restaurant Backend running on http://localhost:${PORT}`);
-  startCheckoutScheduler(io);
+autoSeedDatabase().then(() => {
+  server.listen(PORT, () => {
+    console.log(`🚀 Smart Restaurant Backend running on http://localhost:${PORT}`);
+    startCheckoutScheduler(io);
+  });
 });
 
 server.on('error', (err) => {
