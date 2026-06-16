@@ -59,5 +59,6 @@ router.get('/reviews/:room_id', reviews.getRoomReviews);
 router.get('/admin/stats', authenticateHotelToken, verifyHotelRole(['admin']), admin.getStats);
 router.get('/admin/users', authenticateHotelToken, verifyHotelRole(['admin']), admin.getUsers);
 router.put('/admin/users/:id', authenticateHotelToken, verifyHotelRole(['admin']), admin.updateUser);
+router.delete('/admin/users/:id', authenticateHotelToken, verifyHotelRole(['admin']), admin.deleteUser);
 
 module.exports = router;

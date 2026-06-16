@@ -112,8 +112,45 @@ const updateUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const userCheck = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    if (userCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Guest profile not found.' });
+    }
+
+    const user = userCheck.rows[0];
+
+    // Restrict deletion to unverified users only
+    if (user.is_verified) {
+      return res.status(400).json({ error: 'Only unverified guest accounts can be deleted.' });
+    }
+
+    // Delete associated OTP records first, then delete the user
+    await db.query('DELETE FROM otp_verifications WHERE email = $1', [user.email]);
+    await db.query('DELETE FROM users WHERE id = $1', [id]);
+
+    const io = req.app.get('io');
+    if (io) {
+      io.to('hotel').emit('user:updated', { action: 'delete', user_id: id, sender_id: req.user?.id });
+    }
+
+    res.json({
+      message: 'Unverified guest profile deleted successfully!',
+      user_id: id
+    });
+
+  } catch (error) {
+    console.error('Delete User Error:', error.message);
+    res.status(500).json({ error: 'Failed to delete guest profile.' });
+  }
+};
+
 module.exports = {
   getStats,
   getUsers,
   updateUser,
+  deleteUser,
 };

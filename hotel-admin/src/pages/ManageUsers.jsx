@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useSocket } from '../context/SocketContext';
-import { RefreshCw, Search, UserCheck, UserX, Sun, Moon, Edit3, X, Users } from 'lucide-react';
+import { RefreshCw, Search, UserCheck, UserX, Sun, Moon, Edit3, X, Users, Trash2 } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import toast from 'react-hot-toast';
 
@@ -88,6 +88,21 @@ const ManageUsers = () => {
       toast.error(err.message || 'Failed to update profile.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDelete = async (u) => {
+    if (!window.confirm(`Are you sure you want to delete ${u.name}'s unverified guest account?`)) {
+      return;
+    }
+    try {
+      await apiFetch(`/admin/users/${u.id}`, {
+        method: 'DELETE'
+      });
+      toast.success('Guest account deleted successfully.');
+      fetchUsers();
+    } catch (err) {
+      toast.error(err.message || 'Failed to delete guest profile.');
     }
   };
 
@@ -218,9 +233,21 @@ const ManageUsers = () => {
                           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{u.created_at?.substring(0, 10)}</span>
                         </td>
                         <td style={{ textAlign: 'center' }}>
-                          <button onClick={() => handleOpenEdit(u)} className="btn btn-secondary btn-icon btn-sm" title="Edit Profile">
-                            <Edit3 size={11} />
-                          </button>
+                          <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+                            <button onClick={() => handleOpenEdit(u)} className="btn btn-secondary btn-icon btn-sm" title="Edit Profile">
+                              <Edit3 size={11} />
+                            </button>
+                            {!u.is_verified && (
+                              <button
+                                onClick={() => handleDelete(u)}
+                                className="btn btn-secondary btn-icon btn-sm"
+                                style={{ color: '#f87171', borderColor: 'rgba(239,68,68,0.2)', background: 'rgba(239,68,68,0.06)' }}
+                                title="Delete Profile"
+                              >
+                                <Trash2 size={11} />
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
