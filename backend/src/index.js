@@ -26,11 +26,12 @@ const checkOrigin = (origin, callback) => {
     return;
   }
   
-  // Allow configured origins or any local development ports
+  // Allow configured origins, local development, or any onrender.com subdomains
   if (
     allowedOrigins.includes(origin) ||
     /^http:\/\/localhost(:\d+)?$/.test(origin) ||
-    /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)
+    /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin) ||
+    origin.endsWith('.onrender.com')
   ) {
     callback(null, true);
   } else {
