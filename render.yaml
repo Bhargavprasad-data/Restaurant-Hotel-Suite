@@ -1,10 +1,8 @@
-services:
-  # 1. Database (PostgreSQL)
-  - type: db
-    name: restaurant-suite-db
+databases:
+  - name: restaurant-suite-db
     plan: free
-    ipAllowList: [] # Allow connections only from services in the same region
 
+services:
   # 2. Full-Stack Backend API & WebSocket Server
   - type: web
     name: restaurant-suite-backend
@@ -17,8 +15,7 @@ services:
       - key: PORT
         value: 5000
       - key: DATABASE_URL
-        fromCompound:
-          type: db
+        fromDatabase:
           name: restaurant-suite-db
           property: connectionString
       - key: JWT_SECRET
