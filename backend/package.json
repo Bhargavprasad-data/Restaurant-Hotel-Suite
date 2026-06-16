@@ -1,0 +1,28 @@
+{
+  "name": "restaurant-management-backend",
+  "version": "1.0.0",
+  "description": "Backend API and WebSocket server for the Smart Restaurant Management System",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "seed": "node src/config/seed.js && node src/config/setup_hotel_db.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^8.0.8",
+    "pg": "^8.11.5",
+    "razorpay": "^2.9.2",
+    "socket.io": "^4.7.5",
+    "twilio": "^5.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}

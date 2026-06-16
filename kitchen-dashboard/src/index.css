@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Layout dimensions ─── */
+:root {
+  --sidebar-w-collapsed: 60px;
+  --sidebar-w-expanded: 220px;
+  --topbar-h: 52px;
+}
+
+/* ─── Light mode tokens ─── */
+:root {
+  --bg-base:        #f8fafc;
+  --bg-surface:     #ffffff;
+  --bg-card:        #ffffff;
+  --bg-sidebar:     #0d1117;
+  --border:         rgba(0, 0, 0, 0.07);
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+  --accent:         #f59e0b;
+  --accent-dim:     rgba(245, 158, 11, 0.12);
+}
+
+/* ─── Dark mode tokens ─── */
+.dark {
+  --bg-base:        #0d0f18;
+  --bg-surface:     #111420;
+  --bg-card:        rgba(255, 255, 255, 0.03);
+  --border:         rgba(255, 255, 255, 0.07);
+  --text-primary:   #e2e8f0;
+  --text-secondary: #64748b;
+  --text-muted:     #3a4459;
+  --accent:         #f59e0b;
+  --accent-dim:     rgba(245, 158, 11, 0.1);
+}
+
+/* ─── Base reset ─── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'DM Sans', sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    @apply antialiased;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  header,
+  main,
+  .surface-card {
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', 'Inter', sans-serif;
+  }
+}
+
+/* ─── Custom scrollbar ─── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  @apply rounded-full;
+  background: rgba(100, 116, 139, 0.35);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
+
+/* ─── Shimmer skeleton — light ─── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.shimmer-skeleton {
+  background: linear-gradient(
+    90deg,
+    #e2e8f0 25%,
+    #f8fafc 37%,
+    #e2e8f0 63%
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: 6px;
+}
+
+/* ─── Shimmer skeleton — dark ─── */
+.dark .shimmer-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.09) 37%,
+    rgba(255, 255, 255, 0.03) 63%
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+/* ─── Sidebar transitions ─── */
+.sidebar-rail {
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: width;
+}
+
+.sidebar-fade-label {
+  transition: opacity 0.2s ease, max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, max-width;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ─── Nav items (sidebar) ─── */
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: background 0.15s ease, color 0.15s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.nav-item.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--accent);
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-item:not(.active):hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+}
+
+/* ─── Kitchen order cards ─── */
+.order-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+}
+
+.order-card:hover {
+  border-color: rgba(245, 158, 11, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.dark .order-card:hover {
+  border-color: rgba(245, 158, 11, 0.15);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* ─── Kanban column accent bars ─── */
+.col-pending  { border-top: 3px solid rgba(239, 68, 68, 0.7);  }
+.col-cooking  { border-top: 3px solid rgba(245, 158, 11, 0.7); }
+.col-ready    { border-top: 3px solid rgba(59, 130, 246, 0.7); }
+
+/* ─── Status pills ─── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pill-pending  { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.25);   }
+.pill-cooking  { background: rgba(245,158,11,0.12);  color: #fbbf24; border: 1px solid rgba(245,158,11,0.25);  }
+.pill-ready    { background: rgba(59,130,246,0.12);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.25);  }
+
+/* ─── Premium input fields ─── */
+.premium-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease, background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-input:focus {
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.08);
+}
+
+.premium-input::placeholder { color: var(--text-muted); }
+
+/* ─── Surface card (replaces glass-card / glass-panel) ─── */
+.surface-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+/* ─── Pulse dot animation ─── */
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(0.7); opacity: 0.5; }
+}
+.dot-pulse { animation: pulse-dot 1.4s ease-in-out infinite; }
+
+/* ─── Fade-in-up entry animation ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.fade-in-up { animation: fadeInUp 0.22s ease forwards; }
+
+/* ─── Slow pulse (used for skeleton containers) ─── */
+@keyframes slowPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+.animate-pulse-slow { animation: slowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+/* ─── Glow status boxes ─── */
+.glow-amber { box-shadow: 0 0 16px rgba(245, 158, 11, 0.22); }
+.glow-blue  { box-shadow: 0 0 16px rgba(59,  130, 246, 0.22); }
+.glow-red   { box-shadow: 0 0 16px rgba(239,  68,  68, 0.22); }
+
+/* ─── Modal slide-up ─── */
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+.modal-enter { animation: modalSlideUp 0.22s cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
+
+/* ─── Login / Signup page background ─── */
+.auth-bg {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 20% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(234, 88, 12, 0.06) 0%, transparent 40%),
+              var(--bg-base);
+}
+
+.dark .auth-bg {
+  background: radial-gradient(ellipse at 20% 50%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(234, 88, 12, 0.04) 0%, transparent 40%),
+              var(--bg-base);
+}
