@@ -124,6 +124,21 @@ const MenuManagement = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image size should be less than 2MB.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -496,14 +511,33 @@ const MenuManagement = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Dish Visual Link (Image URL)</label>
-                  <input 
-                    type="url"
-                    placeholder="https://images.unsplash.com/... (Optional)"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    className="input-field"
-                  />
+                  <label className="form-label">Dish Image</label>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    {imageUrl && (
+                      <div style={{ position: 'relative', width: '3.5rem', height: '3.5rem', borderRadius: 'var(--radius-sm)', overflow: 'hidden', border: '1px solid var(--border-color)', flexShrink: 0 }}>
+                        <img src={imageUrl} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <button 
+                          type="button" 
+                          onClick={() => setImageUrl('')}
+                          style={{ position: 'absolute', top: 2, right: 2, padding: 2, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          <X size={10} />
+                        </button>
+                      </div>
+                    )}
+                    <div style={{ flex: 1 }}>
+                      <input 
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="input-field"
+                        style={{ paddingTop: '0.45rem', paddingBottom: '0.45rem', cursor: 'pointer' }}
+                      />
+                      <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                        PNG, JPG or WEBP (Max. 2MB)
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0' }}>
