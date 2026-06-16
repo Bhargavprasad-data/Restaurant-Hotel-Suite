@@ -41,11 +41,11 @@ services:
   # 3. Admin Dashboard
   - type: web
     name: restaurant-admin-dashboard
-    env: static
+    runtime: static
     plan: free
     rootDir: admin-dashboard
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         fromTarget:
@@ -56,11 +56,11 @@ services:
   # 4. Waiter Dashboard
   - type: web
     name: restaurant-waiter-dashboard
-    env: static
+    runtime: static
     plan: free
     rootDir: waiter-dashboard
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         fromTarget:
@@ -71,11 +71,11 @@ services:
   # 5. Kitchen Dashboard
   - type: web
     name: restaurant-kitchen-dashboard
-    env: static
+    runtime: static
     plan: free
     rootDir: kitchen-dashboard
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         fromTarget:
@@ -86,11 +86,11 @@ services:
   # 6. Hotel Customer Dashboard
   - type: web
     name: hotel-customer-dashboard
-    env: static
+    runtime: static
     plan: free
     rootDir: hotel-customer
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         fromTarget:
@@ -101,11 +101,11 @@ services:
   # 7. Hotel Admin Dashboard
   - type: web
     name: hotel-admin-dashboard
-    env: static
+    runtime: static
     plan: free
     rootDir: hotel-admin
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         fromTarget:
