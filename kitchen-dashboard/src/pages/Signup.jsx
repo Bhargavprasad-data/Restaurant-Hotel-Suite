@@ -3,6 +3,26 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Flame, Lock, Mail, User, Phone, Clock, AlertTriangle, ChevronDown, Eye, EyeOff } from 'lucide-react';
 
+/* Reusable field wrapper */
+const Field = ({ label, icon: Icon, children }) => (
+  <div className="space-y-1.5">
+    <label
+      className="text-[11px] font-bold uppercase tracking-[0.1em]"
+      style={{ color: 'var(--text-secondary)' }}
+    >
+      {label}
+    </label>
+    <div className="relative">
+      <Icon
+        size={14}
+        className="absolute left-3.5 top-1/2 -translate-y-1/2"
+        style={{ color: 'var(--text-muted)' }}
+      />
+      {children}
+    </div>
+  </div>
+);
+
 const Signup = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -35,26 +55,6 @@ const Signup = () => {
       setSubmitting(false);
     }
   };
-
-  /* Reusable field wrapper */
-  const Field = ({ label, icon: Icon, children }) => (
-    <div className="space-y-1.5">
-      <label
-        className="text-[11px] font-bold uppercase tracking-[0.1em]"
-        style={{ color: 'var(--text-secondary)' }}
-      >
-        {label}
-      </label>
-      <div className="relative">
-        <Icon
-          size={14}
-          className="absolute left-3.5 top-1/2 -translate-y-1/2"
-          style={{ color: 'var(--text-muted)' }}
-        />
-        {children}
-      </div>
-    </div>
-  );
 
   return (
     <div className="auth-bg min-h-screen w-full flex items-center justify-center p-4">
