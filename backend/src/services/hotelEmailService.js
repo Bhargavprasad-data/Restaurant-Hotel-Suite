@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const https = require('https');
 require('dotenv').config();
 
 // Create nodemailer transporter if credentials exist, otherwise default to console logging
@@ -10,7 +11,12 @@ const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASS;
 const smtpFrom = process.env.SMTP_FROM || '"Tasty Bites & Suites" <noreply@tastybites.com>';
 
-if (smtpHost && smtpUser && smtpPass) {
+const resendApiKey = process.env.RESEND_API_KEY;
+const resendFrom = process.env.RESEND_FROM || '"Tasty Suites" <onboarding@resend.dev>';
+
+if (resendApiKey) {
+  console.log('✉️  Resend Email Service API configured successfully.');
+} else if (smtpHost && smtpUser && smtpPass) {
   try {
     transporter = nodemailer.createTransport({
       host: smtpHost,
@@ -26,11 +32,81 @@ if (smtpHost && smtpUser && smtpPass) {
     console.error('⚠️  Failed to initialize Nodemailer SMTP transporter:', err.message);
   }
 } else {
-  console.log('ℹ️  SMTP credentials missing in .env. Hotel Email notifications will run in Simulator Mode (logged to console).');
+  console.log('ℹ️  SMTP credentials and Resend API key missing in .env. Hotel Email notifications will run in Simulator Mode (logged to console).');
 }
+
+// Helper: Send email via Resend HTTP API (Port 443, bypassed by Render port blocks)
+const sendViaResend = async (to, subject, htmlContent) => {
+  const payload = {
+    from: resendFrom,
+    to: [to],
+    subject,
+    html: htmlContent
+  };
+
+  if (typeof fetch === 'function') {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    return data;
+  } else {
+    return new Promise((resolve, reject) => {
+      const reqData = JSON.stringify(payload);
+      const req = https.request({
+        hostname: 'api.resend.com',
+        path: '/emails',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(reqData)
+        }
+      }, (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+              resolve(data);
+            } else {
+              reject(new Error(data.message || `HTTP error! status: ${res.statusCode}`));
+            }
+          } catch (e) {
+            reject(new Error(`Failed to parse response: ${body}`));
+          }
+        });
+      });
+      req.on('error', reject);
+      req.write(reqData);
+      req.end();
+    });
+  }
+};
 
 // Helper: send HTML email or print mock to console
 const sendMailHelper = async (to, subject, htmlContent) => {
+  if (resendApiKey) {
+    try {
+      await sendViaResend(to, subject, htmlContent);
+      console.log(`✉️  Resend API: Email successfully sent to ${to} [Subject: "${subject}"]`);
+      return { sent: true, mock: false };
+    } catch (error) {
+      console.error(`❌ Resend API send failed. Falling back to logging:`, error.message);
+      printMockEmail(to, subject, htmlContent);
+      return { sent: true, mock: true, error: error.message };
+    }
+  }
+
   const mailOptions = {
     from: smtpFrom,
     to,
@@ -41,7 +117,7 @@ const sendMailHelper = async (to, subject, htmlContent) => {
   if (transporter) {
     try {
       await transporter.sendMail(mailOptions);
-      console.log(`✉️  Real Email successfully sent to ${to} [Subject: "${subject}"]`);
+      console.log(`✉️  Real SMTP Email successfully sent to ${to} [Subject: "${subject}"]`);
       return { sent: true, mock: false };
     } catch (error) {
       console.error(`❌ SMTP send failed. Falling back to logging:`, error.message);
