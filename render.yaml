@@ -1,0 +1,117 @@
+services:
+  # 1. Database (PostgreSQL)
+  - type: db
+    name: restaurant-suite-db
+    plan: free
+    ipAllowList: [] # Allow connections only from services in the same region
+
+  # 2. Full-Stack Backend API & WebSocket Server
+  - type: web
+    name: restaurant-suite-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: DATABASE_URL
+        fromCompound:
+          type: db
+          name: restaurant-suite-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      # Optional integrations (Twilio, Razorpay, SMTP) - user can edit these in Render UI
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+
+  # 3. Admin Dashboard
+  - type: web
+    name: restaurant-admin-dashboard
+    env: static
+    plan: free
+    rootDir: admin-dashboard
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromTarget:
+          type: web
+          name: restaurant-suite-backend
+          property: host
+
+  # 4. Waiter Dashboard
+  - type: web
+    name: restaurant-waiter-dashboard
+    env: static
+    plan: free
+    rootDir: waiter-dashboard
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromTarget:
+          type: web
+          name: restaurant-suite-backend
+          property: host
+
+  # 5. Kitchen Dashboard
+  - type: web
+    name: restaurant-kitchen-dashboard
+    env: static
+    plan: free
+    rootDir: kitchen-dashboard
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromTarget:
+          type: web
+          name: restaurant-suite-backend
+          property: host
+
+  # 6. Hotel Customer Dashboard
+  - type: web
+    name: hotel-customer-dashboard
+    env: static
+    plan: free
+    rootDir: hotel-customer
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromTarget:
+          type: web
+          name: restaurant-suite-backend
+          property: host
+
+  # 7. Hotel Admin Dashboard
+  - type: web
+    name: hotel-admin-dashboard
+    env: static
+    plan: free
+    rootDir: hotel-admin
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromTarget:
+          type: web
+          name: restaurant-suite-backend
+          property: host

@@ -7,7 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('hotel_token') || null);
   const [loading, setLoading] = useState(true);
 
-  const backendUrl = 'http://localhost:5000/api/hotel';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = `${BACKEND_URL}/api/hotel`;
 
   useEffect(() => {
     const loadSession = () => {

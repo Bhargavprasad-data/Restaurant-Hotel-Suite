@@ -24,7 +24,7 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    const socketUrl = 'http://localhost:5000';
+    const socketUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
     const newSocket = io(socketUrl, {
       auth: { token },
       withCredentials: true,
