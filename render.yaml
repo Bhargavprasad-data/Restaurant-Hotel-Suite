@@ -44,7 +44,7 @@ services:
     runtime: static
     rootDir: admin-dashboard
     buildCommand: npm install && npm run build
-    staticPublishPath: admin-dashboard/dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         value: https://restaurant-suite-backend.onrender.com
@@ -55,7 +55,7 @@ services:
     runtime: static
     rootDir: waiter-dashboard
     buildCommand: npm install && npm run build
-    staticPublishPath: waiter-dashboard/dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         value: https://restaurant-suite-backend.onrender.com
@@ -66,7 +66,7 @@ services:
     runtime: static
     rootDir: kitchen-dashboard
     buildCommand: npm install && npm run build
-    staticPublishPath: kitchen-dashboard/dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         value: https://restaurant-suite-backend.onrender.com
@@ -77,7 +77,7 @@ services:
     runtime: static
     rootDir: hotel-customer
     buildCommand: npm install && npm run build
-    staticPublishPath: hotel-customer/dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         value: https://restaurant-suite-backend.onrender.com
@@ -88,7 +88,7 @@ services:
     runtime: static
     rootDir: hotel-admin
     buildCommand: npm install && npm run build
-    staticPublishPath: hotel-admin/dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_BACKEND_URL
         value: https://restaurant-suite-backend.onrender.com
