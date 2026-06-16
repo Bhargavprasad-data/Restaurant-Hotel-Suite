@@ -317,3 +317,13 @@
   50% { opacity: 0.6; }
 }
 .animate-pulse-slow { animation: slowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+/* Style options inside selects to prevent unreadable text in dark/light mode */
+select option {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+.dark select option {
+  background-color: #111420;
+  color: #e2e8f0;
+}
