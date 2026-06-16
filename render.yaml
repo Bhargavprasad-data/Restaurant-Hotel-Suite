@@ -111,7 +111,4 @@ services:
         fromService:
           type: web
           name: restaurant-suite-backend
-          property: host
-          # Wait, let's fix this last dashboard too! It must be property: renderExternalUrl. Let's make sure it is.
-          # Yes! It is renderExternalUrl.
           property: renderExternalUrl
