@@ -398,11 +398,11 @@ const MyBookings = () => {
               >
                 <div className="flex flex-col sm:flex-row gap-0">
                   {/* Room Image */}
-                  <div className="w-full sm:w-40 h-40 sm:h-auto relative shrink-0 overflow-hidden">
+                  <div className="w-full sm:w-40 h-40 sm:h-auto relative shrink-0 overflow-hidden rounded-t-2xl sm:rounded-tr-none sm:rounded-l-2xl sm:rounded-r-none">
                     <img
                       src={getRoomImage(b.image_url) || 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=400&q=80'}
                       alt={`Room ${b.room_number}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-t-2xl sm:rounded-tr-none sm:rounded-l-2xl sm:rounded-r-none"
                     />
                     <div className={`absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/20 to-transparent`} />
                   </div>
