@@ -397,7 +397,7 @@ const MyBookings = () => {
                 style={{ animationDelay: `${i * 0.06}s` }}
               >
                 {/* Room Image */}
-                <div className="w-32 h-32 relative shrink-0 overflow-hidden rounded-2xl mx-auto sm:mx-0">
+                <div className="w-32 h-32 relative shrink-0 overflow-hidden rounded-none mx-auto sm:mx-0">
                   <img
                     src={getRoomImage(b.image_url) || 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=400&q=80'}
                     alt={`Room ${b.room_number}`}
