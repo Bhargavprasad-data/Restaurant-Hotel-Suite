@@ -391,122 +391,120 @@ const MyBookings = () => {
             filteredBookings.map((b, i) => (
               <div
                 key={b.id}
-                className={`card overflow-hidden animate-fade-in-up hover:shadow-md transition-all ${
+                className={`card p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:gap-5 items-center sm:items-start animate-fade-in-up hover:shadow-md transition-all ${
                   highlightId === b.id ? 'ring-2 ring-indigo-500 shadow-lg scale-[1.01] border-indigo-400 dark:border-indigo-500' : ''
                 }`}
                 style={{ animationDelay: `${i * 0.06}s` }}
               >
-                <div className="flex flex-col sm:flex-row gap-0">
-                  {/* Room Image */}
-                  <div className="w-full sm:w-40 h-40 sm:h-auto relative shrink-0 overflow-hidden booking-card-img-container">
-                    <img
-                      src={getRoomImage(b.image_url) || 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=400&q=80'}
-                      alt={`Room ${b.room_number}`}
-                      className="w-full h-full object-cover booking-card-img"
-                    />
-                    <div className={`absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/20 to-transparent`} />
-                  </div>
+                {/* Room Image */}
+                <div className="w-32 h-32 relative shrink-0 overflow-hidden rounded-2xl mx-auto sm:mx-0">
+                  <img
+                    src={getRoomImage(b.image_url) || 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=400&q=80'}
+                    alt={`Room ${b.room_number}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/10 to-transparent" />
+                </div>
 
-                  {/* Content */}
-                  <div className="flex-1 p-5 flex flex-col justify-between gap-4">
-                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <StatusBadge status={b.booking_status} />
-                          {b.payment_status === 'Paid' ? (
-                            <span className="badge bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30">
-                              <CreditCard size={10} /> Paid
-                            </span>
-                          ) : (
-                            <span className="badge bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30">
-                              <Clock size={10} /> Payment Pending
-                            </span>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-slate-900 dark:text-white capitalize text-base">
-                          {b.room_type} Suite — Room {b.room_number}
-                        </h3>
-                        <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
-                          <span className="flex items-center gap-1">
-                            <Calendar size={12} className="text-[#FF385C]" />
-                            Check-in: <span className="font-semibold text-slate-700 dark:text-slate-350">{formatDateTime(b.check_in_date)}</span>
+                {/* Content */}
+                <div className="flex-1 flex flex-col justify-between gap-4 w-full text-left">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <StatusBadge status={b.booking_status} />
+                        {b.payment_status === 'Paid' ? (
+                          <span className="badge bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30">
+                            <CreditCard size={10} /> Paid
                           </span>
-                          <span className="hidden sm:inline text-slate-300">·</span>
-                          <span className="flex items-center gap-1">
-                            <Calendar size={12} className="text-[#FF385C]" />
-                            Check-out: <span className="font-semibold text-slate-700 dark:text-slate-350">{formatDateTime(b.check_out_date)}</span>
+                        ) : (
+                          <span className="badge bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30">
+                            <Clock size={10} /> Payment Pending
                           </span>
-                          <span className="hidden sm:inline text-slate-300">·</span>
-                          <span>{getDiffDays(b)} night{getDiffDays(b) > 1 ? 's' : ''}</span>
-                        </div>
-
-                        {b.booking_status === 'Checked In' && countdowns[b.id] && (
-                          <div className={`mt-3 p-3 rounded-2xl border flex items-center justify-between gap-3 text-xs ${
-                            countdowns[b.id].isLast5Min 
-                              ? 'bg-rose-50/80 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900/30 text-rose-800 dark:text-rose-400 animate-pulse' 
-                              : 'bg-indigo-50/80 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-900/30 text-indigo-800 dark:text-indigo-400'
-                          }`}>
-                            <div className="flex items-center gap-2 text-left">
-                              <Bell size={14} className={countdowns[b.id].isLast5Min ? 'animate-bounce text-rose-500 shrink-0' : 'text-indigo-500 shrink-0'} />
-                              <span className="font-bold">
-                                {countdowns[b.id].isLast5Min ? 'Urgent Checkout Alert' : 'Active Stay'}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1.5 font-mono font-bold shrink-0">
-                              <Clock size={12} className="shrink-0" />
-                              <span>{countdowns[b.id].text}</span>
-                            </div>
-                          </div>
                         )}
                       </div>
-
-                      {/* Price */}
-                      <div className="text-right shrink-0">
-                        <p className="text-xl font-bold text-slate-900 dark:text-white">
-                          ₹{parseFloat(b.total_price).toLocaleString('en-IN')}
-                        </p>
-                        <p className="text-xs text-slate-400 font-mono mt-0.5">
-                          REF: {b.id.substring(0, 10).toUpperCase()}
-                        </p>
+                      <h3 className="font-bold text-slate-900 dark:text-white capitalize text-base">
+                        {b.room_type} Suite — Room {b.room_number}
+                      </h3>
+                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                        <span className="flex items-center gap-1">
+                          <Calendar size={12} className="text-[#FF385C]" />
+                          Check-in: <span className="font-semibold text-slate-700 dark:text-slate-350">{formatDateTime(b.check_in_date)}</span>
+                        </span>
+                        <span className="hidden sm:inline text-slate-300">·</span>
+                        <span className="flex items-center gap-1">
+                          <Calendar size={12} className="text-[#FF385C]" />
+                          Check-out: <span className="font-semibold text-slate-700 dark:text-slate-350">{formatDateTime(b.check_out_date)}</span>
+                        </span>
+                        <span className="hidden sm:inline text-slate-300">·</span>
+                        <span>{getDiffDays(b)} night{getDiffDays(b) > 1 ? 's' : ''}</span>
                       </div>
+
+                      {b.booking_status === 'Checked In' && countdowns[b.id] && (
+                        <div className={`mt-3 p-3 rounded-2xl border flex items-center justify-between gap-3 text-xs ${
+                          countdowns[b.id].isLast5Min 
+                            ? 'bg-rose-50/80 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900/30 text-rose-800 dark:text-rose-400 animate-pulse' 
+                            : 'bg-indigo-50/80 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-900/30 text-indigo-800 dark:text-indigo-400'
+                        }`}>
+                          <div className="flex items-center gap-2 text-left">
+                            <Bell size={14} className={countdowns[b.id].isLast5Min ? 'animate-bounce text-rose-500 shrink-0' : 'text-indigo-500 shrink-0'} />
+                            <span className="font-bold">
+                              {countdowns[b.id].isLast5Min ? 'Urgent Checkout Alert' : 'Active Stay'}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 font-mono font-bold shrink-0">
+                            <Clock size={12} className="shrink-0" />
+                            <span>{countdowns[b.id].text}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
-                      <p className="text-[11px] text-slate-400 font-mono tracking-wide mr-auto">
-                        Booking ID: {b.id.substring(0, 13).toUpperCase()}
+                    {/* Price */}
+                    <div className="text-right shrink-0">
+                      <p className="text-xl font-bold text-slate-900 dark:text-white">
+                        ₹{parseFloat(b.total_price).toLocaleString('en-IN')}
                       </p>
-
-                      {b.payment_status === 'Paid' && (
-                        <button
-                          onClick={() => setSelectedReceipt(b)}
-                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                        >
-                          <ExternalLink size={13} />
-                          Receipt
-                        </button>
-                      )}
-
-                      {b.booking_status === 'Confirmed' && (
-                        <button
-                          onClick={() => handleCancelBooking(b.id)}
-                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 text-xs font-semibold transition-all"
-                        >
-                          <XCircle size={13} />
-                          Cancel
-                        </button>
-                      )}
-
-                      {b.booking_status === 'Cancelled' && (
-                        <button
-                          onClick={() => handleDeleteBooking(b.id)}
-                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold transition-all"
-                        >
-                          <X size={13} />
-                          Delete
-                        </button>
-                      )}
+                      <p className="text-xs text-slate-400 font-mono mt-0.5">
+                        REF: {b.id.substring(0, 10).toUpperCase()}
+                      </p>
                     </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <p className="text-[11px] text-slate-400 font-mono tracking-wide mr-auto">
+                      Booking ID: {b.id.substring(0, 13).toUpperCase()}
+                    </p>
+
+                    {b.payment_status === 'Paid' && (
+                      <button
+                        onClick={() => setSelectedReceipt(b)}
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                      >
+                        <ExternalLink size={13} />
+                        Receipt
+                      </button>
+                    )}
+
+                    {b.booking_status === 'Confirmed' && (
+                      <button
+                        onClick={() => handleCancelBooking(b.id)}
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 text-xs font-semibold transition-all"
+                      >
+                        <XCircle size={13} />
+                        Cancel
+                      </button>
+                    )}
+
+                    {b.booking_status === 'Cancelled' && (
+                      <button
+                        onClick={() => handleDeleteBooking(b.id)}
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold transition-all"
+                      >
+                        <X size={13} />
+                        Delete
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
