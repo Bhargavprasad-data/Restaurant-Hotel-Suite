@@ -66,7 +66,7 @@ const StatusBadge = ({ status }) => {
   const item = map[status] || { className: 'badge-default', icon: null };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 ${item.className}`}>
+    <span className={`inline-flex items-center gap-1.5 ${item.className}`} style={{ borderRadius: '0px' }}>
       {item.icon}
       <span>{status}</span>
     </span>
@@ -397,11 +397,12 @@ const MyBookings = () => {
                 style={{ animationDelay: `${i * 0.06}s` }}
               >
                 {/* Room Image */}
-                <div className="w-32 h-32 relative shrink-0 overflow-hidden rounded-none mx-auto sm:mx-0">
+                <div className="w-32 h-32 relative shrink-0 overflow-hidden mx-auto sm:mx-0" style={{ borderRadius: '0px' }}>
                   <img
                     src={getRoomImage(b.image_url) || 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=400&q=80'}
                     alt={`Room ${b.room_number}`}
                     className="w-full h-full object-cover"
+                    style={{ borderRadius: '0px' }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/10 to-transparent" />
                 </div>
@@ -413,11 +414,11 @@ const MyBookings = () => {
                       <div className="flex items-center gap-2 mb-1">
                         <StatusBadge status={b.booking_status} />
                         {b.payment_status === 'Paid' ? (
-                          <span className="badge bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30">
+                          <span className="badge rounded-none bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30" style={{ borderRadius: '0px' }}>
                             <CreditCard size={10} /> Paid
                           </span>
                         ) : (
-                          <span className="badge bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30">
+                          <span className="badge rounded-none bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30" style={{ borderRadius: '0px' }}>
                             <Clock size={10} /> Payment Pending
                           </span>
                         )}
