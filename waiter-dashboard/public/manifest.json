@@ -1,0 +1,23 @@
+{
+  "short_name": "Tasty Waiter",
+  "name": "Tasty Waiter — Order Taking Portal",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0F172A",
+  "theme_color": "#FF385C",
+  "display": "standalone",
+  "orientation": "portrait"
+}
