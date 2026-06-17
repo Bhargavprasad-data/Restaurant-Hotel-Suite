@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import {
   ShieldCheck, CreditCard, CheckCircle, Printer,
   ArrowLeft, Calendar, Smartphone, Globe, Sparkles,
-  ChevronRight, Lock, Building2, AlertCircle, Banknote
+  ChevronRight, Lock, Building2, AlertCircle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -128,7 +128,6 @@ const Booking = () => {
     { id: 'UPI',        label: 'UPI / GPay / PhonePe', icon: <Smartphone size={20} className="text-slate-500" /> },
     { id: 'Card',       label: 'Credit / Debit Card',   icon: <CreditCard size={20} className="text-slate-500" /> },
     { id: 'NetBanking', label: 'Net Banking',            icon: <Building2 size={20} className="text-slate-500" /> },
-    { id: 'Cash',       label: 'Cash on Arrival',        icon: <Banknote size={20} className="text-slate-500" /> },
   ];
 
   /* ── Loading ── */
