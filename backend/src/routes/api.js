@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const authController = require('../controllers/authController');
+const hotelAuthController = require('../controllers/hotelAuthController');
 const tableController = require('../controllers/tableController');
 const menuController = require('../controllers/menuController');
 const orderController = require('../controllers/orderController');
@@ -15,6 +16,7 @@ const { authenticateToken, verifyRole } = require('../middleware/auth');
 router.post('/auth/register', authController.register); // Public — waiter/kitchen self-registration
 router.post('/auth/login', authController.login);
 router.get('/auth/me', authenticateToken, authController.getMe);
+router.post('/contact', hotelAuthController.submitContactQuery);
 
 // ==========================================
 // 2. TABLE MANAGEMENT ROUTES
