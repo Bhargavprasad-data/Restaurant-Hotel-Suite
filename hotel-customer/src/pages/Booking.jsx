@@ -196,7 +196,7 @@ const Booking = () => {
               {booking.payment_status === 'Paid' ? (
                 <span className="badge badge-success text-xs">🎉 Booking Confirmed</span>
               ) : (
-                <span className="badge bg-amber-500/10 text-amber-600 border border-amber-500/20 text-xs px-2.5 py-1 rounded-full font-bold">🕒 Pay on Arrival</span>
+                <span className="badge bg-amber-500/10 text-amber-600 border border-amber-500/20 text-xs px-2.5 py-1 rounded-md font-bold">🕒 Pay on Arrival</span>
               )}
               <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-2">You're all set!</h1>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Your reservation has been confirmed.</p>

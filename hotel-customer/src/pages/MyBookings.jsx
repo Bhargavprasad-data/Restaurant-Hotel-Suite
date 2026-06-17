@@ -66,7 +66,7 @@ const StatusBadge = ({ status }) => {
   const item = map[status] || { className: 'badge-default', icon: null };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 ${item.className} !rounded-none`} style={{ borderRadius: '0px' }}>
+    <span className={`inline-flex items-center gap-1.5 ${item.className}`}>
       {item.icon}
       <span>{status}</span>
     </span>
@@ -413,11 +413,11 @@ const MyBookings = () => {
                       <div className="flex items-center gap-2 mb-1">
                         <StatusBadge status={b.booking_status} />
                         {b.payment_status === 'Paid' ? (
-                          <span className="badge bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30 !rounded-none" style={{ borderRadius: '0px' }}>
+                          <span className="badge bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30">
                             <CreditCard size={10} /> Paid
                           </span>
                         ) : (
-                          <span className="badge bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30 !rounded-none" style={{ borderRadius: '0px' }}>
+                          <span className="badge bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30">
                             <Clock size={10} /> Payment Pending
                           </span>
                         )}
