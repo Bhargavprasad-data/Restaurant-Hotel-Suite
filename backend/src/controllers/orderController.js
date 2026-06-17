@@ -77,6 +77,13 @@ const placeOrder = async (req, res) => {
         table_number: updatedTable.table_number,
       });
       io.emit('table-update', { action: 'update', table: updatedTable });
+      io.emit('notification', {
+        id: Math.random().toString(36).substring(2, 9),
+        message: `🆕 New Order for Table ${updatedTable.table_number}!`,
+        type: 'new-order',
+        table_id: table_id,
+        order_id: order.id,
+      });
     }
 
     res.status(201).json({
