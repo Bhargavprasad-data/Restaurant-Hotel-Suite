@@ -366,7 +366,7 @@ const sendContactQuery = async (queryDetails) => {
       <p style="margin: 0; white-space: pre-wrap; font-style: italic; background-color: #f1f5f9; padding: 12px; border-radius: 8px;">${queryDetails.message}</p>
     </div>
   `;
-  return await sendMailHelper(process.env.SMTP_USER || 'admin@tastysuites.com', `📞 Support Query: ${queryDetails.subject}`, baseTemplate(title, body));
+  return await sendMailHelper('bhargavvana80@gmail.com', `📞 Support Query: ${queryDetails.subject}`, baseTemplate(title, body));
 };
 
 module.exports = {
