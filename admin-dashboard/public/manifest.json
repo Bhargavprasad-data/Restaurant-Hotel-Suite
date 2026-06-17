@@ -3,14 +3,14 @@
   "name": "Tasty Admin — Restaurant & Hotel Management",
   "icons": [
     {
-      "src": "/icon.jpg",
-      "type": "image/jpeg",
+      "src": "/icon_512.png",
+      "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon.jpg",
-      "type": "image/jpeg",
+      "src": "/icon_192.png",
+      "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     }
