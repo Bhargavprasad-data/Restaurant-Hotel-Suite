@@ -4,6 +4,7 @@ import { useSocket } from '../context/SocketContext';
 import { useTheme } from '../context/ThemeContext';
 import { RefreshCw, Search, Filter, Sun, Moon, ClipboardList } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
+import Topbar from '../components/Topbar';
 import toast from 'react-hot-toast';
 
 const STATUS_OPTIONS = ['All', 'Confirmed', 'Checked In', 'Checked Out', 'Cancelled'];
@@ -204,25 +205,11 @@ const ManageBookings = () => {
       <Sidebar />
 
       <div className="admin-main">
-        {/* Topbar */}
-        <div className="admin-topbar">
-          <div>
-            <div className="topbar-title">Bookings</div>
-            <div className="topbar-breadcrumb">Manage guest reservations & stay status</div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button
-              onClick={toggleTheme}
-              className="btn btn-secondary btn-icon"
-              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {isDark ? <Sun size={13} style={{ color: '#fb923c' }} /> : <Moon size={13} style={{ color: '#818cf8' }} />}
-            </button>
-            <button onClick={fetchBookings} className="btn btn-secondary btn-icon" title="Refresh">
-              <RefreshCw size={13} />
-            </button>
-          </div>
-        </div>
+        <Topbar
+          title="Bookings"
+          breadcrumb="Manage guest reservations & stay status"
+          onRefresh={fetchBookings}
+        />
 
         <div className="admin-content">
 

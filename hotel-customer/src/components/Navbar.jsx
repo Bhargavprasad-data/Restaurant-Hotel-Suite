@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import {
   Menu, X, Home, BedDouble, CalendarCheck, User, LogOut,
   Globe, ChevronRight, Search, Bell, Star, Hotel, Sun, Moon,
-  ArrowLeft
+  ArrowLeft, HelpCircle
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -84,6 +84,7 @@ const Navbar = ({ isConnecting = false }) => {
     ...(user ? [
       { label: 'My Bookings', path: '/my-bookings', icon: <CalendarCheck size={18} /> },
     ] : []),
+    { label: 'Help & Contact', path: '/help', icon: <HelpCircle size={18} /> },
   ];
 
   const isHeroPage = ['/', '/rooms'].includes(location.pathname);

@@ -4,6 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useSocket } from '../context/SocketContext';
 import { RefreshCw, Search, UserCheck, UserX, Sun, Moon, Edit3, X, Users, Trash2 } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
+import Topbar from '../components/Topbar';
 import toast from 'react-hot-toast';
 
 const ManageUsers = () => {
@@ -127,25 +128,11 @@ const ManageUsers = () => {
       <Sidebar />
 
       <div className="admin-main">
-        {/* Topbar */}
-        <div className="admin-topbar">
-          <div>
-            <div className="topbar-title">Guests</div>
-            <div className="topbar-breadcrumb">Registered user accounts & verification status</div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button
-              onClick={toggleTheme}
-              className="btn btn-secondary btn-icon"
-              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {isDark ? <Sun size={13} style={{ color: '#fb923c' }} /> : <Moon size={13} style={{ color: '#818cf8' }} />}
-            </button>
-            <button onClick={fetchUsers} className="btn btn-secondary btn-icon" title="Refresh">
-              <RefreshCw size={13} />
-            </button>
-          </div>
-        </div>
+        <Topbar
+          title="Guests"
+          breadcrumb="Registered user accounts & verification status"
+          onRefresh={fetchUsers}
+        />
 
         <div className="admin-content">
 

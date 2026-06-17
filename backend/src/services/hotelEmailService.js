@@ -354,10 +354,26 @@ const sendCheckoutReminder = async (email, booking) => {
   return await sendMailHelper(email, "⏰ Stay Ending Soon - Tasty Suites", baseTemplate(title, body));
 };
 
+const sendContactQuery = async (queryDetails) => {
+  const title = `New Support Query: ${queryDetails.subject}`;
+  const body = `
+    <p>You have received a new contact / support query from your website:</p>
+    <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; background-color: #f8fafc; margin: 20px 0; color: #2d3748;">
+      <p style="margin: 5px 0;"><strong>Name:</strong> ${queryDetails.name}</p>
+      <p style="margin: 5px 0;"><strong>Email:</strong> ${queryDetails.email}</p>
+      <p style="margin: 5px 0;"><strong>Subject:</strong> ${queryDetails.subject}</p>
+      <p style="margin: 15px 0 5px 0;"><strong>Message:</strong></p>
+      <p style="margin: 0; white-space: pre-wrap; font-style: italic; background-color: #f1f5f9; padding: 12px; border-radius: 8px;">${queryDetails.message}</p>
+    </div>
+  `;
+  return await sendMailHelper(process.env.SMTP_USER || 'admin@tastysuites.com', `📞 Support Query: ${queryDetails.subject}`, baseTemplate(title, body));
+};
+
 module.exports = {
   sendOtpEmail,
   sendBookingConfirmation,
   sendBookingCancellation,
   sendPasswordReset,
   sendCheckoutReminder,
+  sendContactQuery,
 };

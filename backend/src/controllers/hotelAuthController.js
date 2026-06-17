@@ -305,6 +305,32 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const submitContactQuery = async (req, res) => {
+  const { name, email, subject, message } = req.body;
+
+  if (!name || !email || !subject || !message) {
+    return res.status(400).json({ error: 'Please fill out all contact query fields.' });
+  }
+
+  try {
+    // Dispatch support email
+    await emailService.sendContactQuery({ name, email, subject, message });
+
+    // Emit live WebSocket notification to hotel-admin
+    const io = req.app.get('io');
+    if (io) {
+      io.to('hotel').emit('contact:query', { name, email, subject, message });
+    }
+
+    res.json({
+      message: 'Thank you for reaching out! Your query has been logged and received. A support agent will contact you shortly.'
+    });
+  } catch (error) {
+    console.error('Contact Form Submit Error:', error.message);
+    res.status(500).json({ error: 'Failed to process support query. Please try again later.' });
+  }
+};
+
 module.exports = {
   register,
   verifyOtp,
@@ -312,4 +338,5 @@ module.exports = {
   login,
   forgotPassword,
   updateProfile,
+  submitContactQuery,
 };

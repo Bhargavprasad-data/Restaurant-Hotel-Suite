@@ -4,6 +4,7 @@ import { useSocket } from '../context/SocketContext';
 import { useTheme } from '../context/ThemeContext';
 import { Plus, Trash2, Edit3, X, RefreshCw, Search, BedDouble, Sun, Moon } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
+import Topbar from '../components/Topbar';
 import toast from 'react-hot-toast';
 
 const statusBadge = (status) => {
@@ -154,28 +155,16 @@ const ManageRooms = () => {
       <Sidebar />
 
       <div className="admin-main">
-        {/* Topbar */}
-        <div className="admin-topbar">
-          <div>
-            <div className="topbar-title">Rooms</div>
-            <div className="topbar-breadcrumb">Manage room inventory & availability</div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button
-              onClick={toggleTheme}
-              className="btn btn-secondary btn-icon"
-              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {isDark ? <Sun size={13} style={{ color: '#fb923c' }} /> : <Moon size={13} style={{ color: '#818cf8' }} />}
-            </button>
-            <button onClick={fetchRooms} className="btn btn-secondary btn-icon" title="Refresh">
-              <RefreshCw size={13} />
-            </button>
+        <Topbar
+          title="Rooms"
+          breadcrumb="Manage room inventory & availability"
+          onRefresh={fetchRooms}
+          extraActions={
             <button onClick={handleOpenAdd} className="btn btn-primary">
               <Plus size={13} /> Add Room
             </button>
-          </div>
-        </div>
+          }
+        />
 
         <div className="admin-content">
 

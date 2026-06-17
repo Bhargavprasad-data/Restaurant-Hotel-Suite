@@ -16,6 +16,7 @@ import RoomDetails   from './pages/RoomDetails';
 import Booking       from './pages/Booking';
 import MyBookings    from './pages/MyBookings';
 import Profile       from './pages/Profile';
+import Help          from './pages/Help';
 
 /* ─── Loading Screen with shimmer skeleton ─── */
 const LoadingScreen = () => (
@@ -76,6 +77,7 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/rooms"           element={<RoomListing />} />
               <Route path="/rooms/:id"       element={<RoomDetails />} />
+              <Route path="/help"            element={<Help />} />
 
               {/* Protected */}
               <Route path="/booking"     element={<ProtectedRoute><Booking /></ProtectedRoute>} />

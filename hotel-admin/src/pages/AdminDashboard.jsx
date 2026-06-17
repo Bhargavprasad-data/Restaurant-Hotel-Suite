@@ -9,6 +9,7 @@ import {
   Sun, Moon, Inbox
 } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
+import Topbar from '../components/Topbar';
 import toast from 'react-hot-toast';
 
 const StatusDot = ({ status }) => {
@@ -26,6 +27,11 @@ const StatusDot = ({ status }) => {
       <span style={{ fontSize: 11.5, fontWeight: 600, color }}>{status}</span>
     </span>
   );
+};
+
+const getPaymentBadge = (status) => {
+  if (status === 'Paid') return <span className="badge badge-success">Paid</span>;
+  return <span className="badge badge-warning">{status || 'Pending'}</span>;
 };
 
 const AdminDashboard = () => {
@@ -105,29 +111,12 @@ const AdminDashboard = () => {
       <Sidebar />
 
       <div className="admin-main">
-        {/* Topbar */}
-        <div className="admin-topbar">
-          <div>
-            <div className="topbar-title">Dashboard</div>
-            <div className="topbar-breadcrumb">{greeting}, {user?.name?.split(' ')[0] || 'Admin'}</div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <button
-              onClick={toggleTheme}
-              className="btn btn-secondary btn-icon"
-              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {isDark ? <Sun size={13} style={{ color: '#fb923c' }} /> : <Moon size={13} style={{ color: '#818cf8' }} />}
-            </button>
-            <button onClick={() => fetchStats(true)} className="btn btn-secondary btn-icon" disabled={refreshing} title="Refresh">
-              <RefreshCw size={13} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
-            </button>
-            <div style={{ padding: '5px 12px', borderRadius: 8, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.18)', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ width: 6, height: 6, background: '#4ade80', borderRadius: '50%', boxShadow: '0 0 5px #4ade80' }} />
-              <span style={{ fontSize: 11, fontWeight: 600, color: '#4ade80' }}>Live</span>
-            </div>
-          </div>
-        </div>
+        <Topbar
+          title="Dashboard"
+          breadcrumb={`${greeting}, ${user?.name?.split(' ')[0] || 'Admin'}`}
+          onRefresh={() => fetchStats(true)}
+          refreshing={refreshing}
+        />
 
         <div className="admin-content">
 
@@ -186,6 +175,7 @@ const AdminDashboard = () => {
                           <th>Room</th>
                           <th>Dates</th>
                           <th>Amount</th>
+                          <th>Payment</th>
                           <th>Status</th>
                         </tr>
                       </thead>
@@ -200,6 +190,7 @@ const AdminDashboard = () => {
                             <td className="td-mono" style={{ color: 'var(--accent)', fontWeight: 700 }}>
                               ₹{Number(b.total_price).toLocaleString('en-IN')}
                             </td>
+                            <td>{getPaymentBadge(b.payment_status)}</td>
                             <td><StatusDot status={b.booking_status} /></td>
                           </tr>
                         ))}

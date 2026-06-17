@@ -37,9 +37,35 @@ const submitReview = async (req, res) => {
       [user_id, room_id, parsedRating, comment || '']
     );
 
+    const review = reviewResult.rows[0];
+
+    // Emit live WebSocket notification to hotel-admin
+    const io = req.app.get('io');
+    if (io) {
+      try {
+        const details = await db.query(
+          `SELECT u.name, ro.room_number 
+           FROM users u, rooms ro 
+           WHERE u.id = $1 AND ro.id = $2`,
+          [user_id, room_id]
+        );
+        const name = details.rows[0]?.name || 'Guest';
+        const roomNum = details.rows[0]?.room_number || '';
+
+        io.to('hotel').emit('review:created', {
+          reviewer_name: name,
+          room_number: roomNum,
+          rating: parsedRating,
+          comment: comment || ''
+        });
+      } catch (err) {
+        console.error('Failed to dispatch review socket notification:', err.message);
+      }
+    }
+
     res.status(201).json({
       message: 'Thank you for your rating! Your review was recorded.',
-      review: reviewResult.rows[0]
+      review
     });
 
   } catch (error) {

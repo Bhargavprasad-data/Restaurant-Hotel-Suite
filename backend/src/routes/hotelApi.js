@@ -19,6 +19,7 @@ router.post('/auth/resend-otp', auth.resendOtp);
 router.post('/auth/login', auth.login);
 router.post('/auth/forgot-password', auth.forgotPassword);
 router.put('/auth/profile', authenticateHotelToken, auth.updateProfile);
+router.post('/contact', auth.submitContactQuery);
 
 // ==========================================
 // 2. ROOM CATALOG ROUTES
