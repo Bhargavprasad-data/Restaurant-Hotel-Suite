@@ -3,7 +3,7 @@ const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/favicon.ico',
-  '/icon.png',
+  '/icon.jpg',
   '/manifest.json'
 ];
 

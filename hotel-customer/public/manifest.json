@@ -3,14 +3,14 @@
   "name": "Tasty Suites — Luxury Hotel Reservations",
   "icons": [
     {
-      "src": "/icon.png",
-      "type": "image/png",
+      "src": "/icon.jpg",
+      "type": "image/jpeg",
       "sizes": "512x512",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon.png",
-      "type": "image/png",
+      "src": "/icon.jpg",
+      "type": "image/jpeg",
       "sizes": "192x192",
       "purpose": "any maskable"
     }
