@@ -247,6 +247,8 @@ const SimulatedCheckout = () => {
           }
 
           .pr-qr-img {
+            display: block !important;
+            margin: 0 auto !important;
             width: 130px !important;
             height: 130px !important;
             border: 2px solid #000 !important;
