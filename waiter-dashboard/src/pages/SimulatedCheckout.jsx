@@ -235,6 +235,10 @@ const SimulatedCheckout = () => {
             padding: 12px 10px;
             text-align: center;
             border-bottom: 1px dashed #aaa;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
           }
 
           .pr-qr-label {
@@ -247,8 +251,6 @@ const SimulatedCheckout = () => {
           }
 
           .pr-qr-img {
-            display: block !important;
-            margin: 0 auto !important;
             width: 130px !important;
             height: 130px !important;
             border: 2px solid #000 !important;
