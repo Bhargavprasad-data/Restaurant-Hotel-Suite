@@ -136,7 +136,7 @@ const WaiterOrders = () => {
       phone = phone.replace('+', '');
     }
 
-    const checkoutUrl = `http://localhost:5177/checkout/simulated?order_id=${order.id}&razorpay_order_id=${order.razorpay_order_id}&amount=${order.grand_total}`;
+    const checkoutUrl = `${window.location.origin}/checkout/simulated?order_id=${order.id}&razorpay_order_id=${order.razorpay_order_id}&amount=${order.grand_total}`;
     const message = `Hello ${order.customer_name}! 🍽️\n\nThank you for dining with us at Tasty Bites. Your bill for Table ${order.table_number} is generated.\n\n💵 *Total Amount:* ₹${parseFloat(order.grand_total).toFixed(2)}\n🔗 *Secure Payment Link:* ${checkoutUrl}\n\nPlease click the link above to complete your online payment. Once completed, a green receipt will be generated automatically for your checkout exit pass!\n\nWe hope to serve you again soon! ⭐`;
 
     const encodedText = encodeURIComponent(message);
@@ -212,7 +212,7 @@ const WaiterOrders = () => {
 
   const openPayment = (order) => {
     const path = `checkout/simulated?order_id=${order.id}&razorpay_order_id=${order.razorpay_order_id}&amount=${order.grand_total}`;
-    window.open(`http://localhost:5174/${path}`, '_blank');
+    window.open(`${window.location.origin}/${path}`, '_blank');
   };
 
   /* ══════════ SHIMMER LOADING ══════════ */

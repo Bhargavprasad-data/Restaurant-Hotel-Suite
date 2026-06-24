@@ -193,8 +193,16 @@ const updateOrderStatus = async (req, res) => {
       const tax = total * taxRate;
       const grandTotal = total + tax;
 
+      const originUrl = req.get('origin') || req.get('referer');
+      let frontendUrl;
+      if (originUrl) {
+          try {
+              frontendUrl = new URL(originUrl).origin;
+          } catch(e) {}
+      }
+
       // Create online payment order (Razorpay)
-      const paymentInfo = await razorpayService.createPaymentOrder(id, grandTotal);
+      const paymentInfo = await razorpayService.createPaymentOrder(id, grandTotal, frontendUrl);
 
       // Save billing metrics into database
       const billedOrderResult = await client.query(
@@ -406,8 +414,14 @@ const sendWhatsAppBillManual = async (req, res) => {
     const tableResult = await db.query('SELECT * FROM tables WHERE id = $1', [order.table_id]);
     const tableNum = tableResult.rows.length > 0 ? tableResult.rows[0].table_number : 'N/A';
 
+    const originUrl = req.get('origin') || req.get('referer');
+    let frontendUrlStr = process.env.FRONTEND_URL || 'http://localhost:5174';
+    if (originUrl) {
+        try { frontendUrlStr = new URL(originUrl).origin; } catch(e) {}
+    }
+
     // 3. Generate secure payment/checkout link
-    const checkoutUrl = `${process.env.FRONTEND_URL || 'http://localhost:5177'}/checkout/simulated?order_id=${order.id}&razorpay_order_id=${order.razorpay_order_id}&amount=${order.grand_total}`;
+    const checkoutUrl = `${frontendUrlStr}/checkout/simulated?order_id=${order.id}&razorpay_order_id=${order.razorpay_order_id}&amount=${order.grand_total}`;
 
     // 4. Dispatch WhatsApp message via Twilio service
     const twilioResult = await twilioService.sendWhatsAppBill(

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ShieldCheck, CreditCard, Sparkles, CheckCircle, Printer, DoorOpen } from 'lucide-react';
+import { API_BASE_URL } from '../context/AuthContext';
 
 const SimulatedCheckout = () => {
   const [searchParams] = useSearchParams();
@@ -21,7 +22,7 @@ const SimulatedCheckout = () => {
     const fetchOrderDetails = async () => {
       if (!orderId) return;
       try {
-        const response = await fetch(`http://localhost:5000/api/orders/${orderId}/receipt`);
+        const response = await fetch(`${API_BASE_URL}/orders/${orderId}/receipt`);
         if (response.ok) {
           const data = await response.json();
           setReceipt(data);
@@ -47,7 +48,7 @@ const SimulatedCheckout = () => {
     const mockPaymentId = `pay_${Math.random().toString(36).substring(2, 11).toUpperCase()}`;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${orderId}/simulate-payment`, {
+      const response = await fetch(`${API_BASE_URL}/orders/${orderId}/simulate-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
