@@ -27,10 +27,6 @@ const Login = () => {
     }
   };
 
-  const autofillDemo = () => {
-    setEmail('kitchen1@restaurant.com');
-    setPassword('kitchen123');
-  };
 
   return (
     <div className="auth-bg min-h-screen w-full flex items-center justify-center p-4">
@@ -197,24 +193,7 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Demo autofill */}
-        <div className="mt-4 text-center">
-          <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
-            Quick Demo
-          </p>
-          <button
-            id="login-demo-fill"
-            onClick={autofillDemo}
-            className="px-4 py-1.5 rounded-lg text-[11px] font-bold border transition-all cursor-pointer hover:opacity-80"
-            style={{
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border)',
-              color: 'var(--text-secondary)',
-            }}
-          >
-            Fill Chef Credentials
-          </button>
-        </div>
+
       </div>
     </div>
   );

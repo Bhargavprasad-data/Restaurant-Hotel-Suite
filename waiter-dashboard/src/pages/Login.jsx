@@ -240,26 +240,7 @@ const Login = () => {
                 }
               </button>
 
-              {/* Demo credentials */}
-              <div className="pt-3 border-t border-slate-100 dark:border-white/[0.07] text-center">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em]
-                  text-slate-400 dark:text-slate-600 mb-2">
-                  Quick Demo Login
-                </p>
-                <button
-                  type="button"
-                  onClick={() => { setEmail('waiter1@restaurant.com'); setPassword('waiter123'); }}
-                  className="px-4 py-2 rounded-lg text-[11px] font-semibold
-                    text-slate-500 dark:text-slate-400
-                    bg-slate-50 dark:bg-white/[0.04]
-                    border border-slate-200 dark:border-white/[0.08]
-                    hover:bg-slate-100 dark:hover:bg-white/[0.07]
-                    hover:text-slate-700 dark:hover:text-slate-300
-                    transition-all"
-                >
-                  Fill Waiter Demo Credentials
-                </button>
-              </div>
+
 
               <p className="text-center text-[11px] text-slate-400 dark:text-slate-600">
                 Don't have an account?{' '}
