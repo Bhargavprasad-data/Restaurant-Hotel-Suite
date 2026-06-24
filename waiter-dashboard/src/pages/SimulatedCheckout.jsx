@@ -120,15 +120,13 @@ const SimulatedCheckout = () => {
           #print-receipt * { visibility: visible !important; }
 
           #print-receipt {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
+            position: relative !important;
             width: 80mm !important;
+            margin: 0 auto !important;
             background: #ffffff !important;
             color: #000000 !important;
             font-family: 'Courier New', Courier, monospace !important;
             padding: 0 !important;
-            margin: 0 !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
