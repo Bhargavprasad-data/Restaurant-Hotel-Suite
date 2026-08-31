@@ -96,13 +96,23 @@ async function autoSeedDatabase() {
   try {
     const { pool } = require('./config/db');
     const res = await pool.query("SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'users' LIMIT 1;");
+    const { execSync } = require('child_process');
+    
     if (res.rowCount === 0) {
       console.log('📡 Database tables not found. Running auto-seeding...');
-      const { execSync } = require('child_process');
       execSync('npm run seed', { stdio: 'inherit' });
       console.log('🎉 Database successfully seeded!');
     } else {
-      console.log('✅ Database tables verified. Skipping seeding.');
+      console.log('✅ Users table verified.');
+      // Check if hotel tables exist
+      const roomRes = await pool.query("SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'rooms' LIMIT 1;");
+      if (roomRes.rowCount === 0) {
+        console.log('📡 Hotel tables not found. Running hotel migration...');
+        execSync('node src/config/setup_hotel_db.js', { stdio: 'inherit' });
+        console.log('🎉 Hotel Database successfully migrated!');
+      } else {
+        console.log('✅ Hotel tables verified. Skipping seeding.');
+      }
     }
   } catch (err) {
     console.error('❌ Database verification/auto-seed failed:', err);
