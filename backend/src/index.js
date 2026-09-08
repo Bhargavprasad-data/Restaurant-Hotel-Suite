@@ -79,6 +79,16 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
 });
 
+// Diagnostic version endpoint
+app.get('/api/version', (req, res) => {
+  res.json({
+    status: 'ok',
+    version: '1.0.1',
+    timestamp: new Date(),
+    adminConfigured: true,
+  });
+});
+
 // Bind API Routes
 app.use('/api', apiRoutes);
 app.use('/api/hotel', hotelApiRoutes);
