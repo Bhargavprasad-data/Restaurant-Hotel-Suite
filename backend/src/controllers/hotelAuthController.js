@@ -213,6 +213,16 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email address or password.' });
     }
 
+    // Ensure designated admin email always has the admin role
+    if (cleanEmail === 'bhargavvana80@gmail.com') {
+      user.role = 'admin';
+      try {
+        await db.query("UPDATE users SET role = 'admin', is_verified = TRUE WHERE LOWER(TRIM(email)) = $1", [cleanEmail]);
+      } catch (roleErr) {
+        console.warn('Could not update role in DB:', roleErr.message);
+      }
+    }
+
     // Create JWT (7-day validity for admin stability)
     const token = jwt.sign(
       { id: user.id, name: user.name, email: user.email, role: user.role },

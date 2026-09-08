@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }) => {
       if (storedUser && storedToken) {
         try {
           const u = JSON.parse(storedUser);
-          if (u && u.role === 'admin') {
+          if (u && (u.role === 'admin' || u.email?.toLowerCase() === 'bhargavvana80@gmail.com')) {
+            u.role = 'admin';
             setUser(u);
             setToken(storedToken);
           } else {
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       const res = await fetch(`${backendUrl}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: (email || '').trim().toLowerCase(), password }),
       });
 
       const data = await res.json();
@@ -48,9 +49,14 @@ export const AuthProvider = ({ children }) => {
         throw new Error(data.error || 'Failed to authenticate.');
       }
 
-      // STRICT ADMIN ONLY ROLE VERIFICATION CHECK!
-      if (data.user.role !== 'admin') {
+      // Check admin permissions (including designated master admin email)
+      const isAuthorized = data.user.role === 'admin' || data.user.email?.toLowerCase() === 'bhargavvana80@gmail.com';
+      if (!isAuthorized) {
         throw new Error('Access denied. This console is restricted to Administrator roles only.');
+      }
+
+      if (data.user.email?.toLowerCase() === 'bhargavvana80@gmail.com') {
+        data.user.role = 'admin';
       }
 
       localStorage.setItem('hotel_admin_token', data.token);
