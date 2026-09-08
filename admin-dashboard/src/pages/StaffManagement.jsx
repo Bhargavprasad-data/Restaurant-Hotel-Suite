@@ -42,8 +42,13 @@ const StaffManagement = () => {
       setAttendanceLogs(Array.isArray(attendanceData) ? attendanceData : []);
       setLoading(false);
     } catch (err) {
-      console.error('Staff/Attendance fetch failure:', err);
-      setError('Failed to retrieve personnel records. Retrying connection to backend...');
+      console.error('Staff fetch error:', err);
+      if (err.isAuthError || err.message?.includes('unauthorized') || err.message?.includes('Session expired')) {
+        setError('Session expired or unauthorized. Please log in again.');
+        setLoading(false);
+        return;
+      }
+      setError('Failed to load staff records. Retrying connection to backend...');
       setLoading(true); // Retain loading shell when backend is offline
       
       // Auto-retry in 3 seconds to check if backend came online

@@ -188,8 +188,10 @@ const login = async (req, res) => {
     return res.status(400).json({ error: 'Please provide email and password.' });
   }
 
+  const cleanEmail = (email || '').trim().toLowerCase();
+
   try {
-    const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    const userResult = await db.query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [cleanEmail]);
     if (userResult.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid email address or password.' });
     }
@@ -211,11 +213,11 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email address or password.' });
     }
 
-    // Create JWT
+    // Create JWT (7-day validity for admin stability)
     const token = jwt.sign(
       { id: user.id, name: user.name, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'supersecretrestaurantjwttokenkey123!',
-      { expiresIn: '24h' }
+      { expiresIn: '7d' }
     );
 
     res.json({

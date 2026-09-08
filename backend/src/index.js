@@ -114,8 +114,53 @@ async function autoSeedDatabase() {
         console.log('✅ Hotel tables verified. Skipping seeding.');
       }
     }
+
+    // Always ensure admin credentials for hotel & restaurant consoles
+    await ensureAdminUser(pool);
   } catch (err) {
     console.error('❌ Database verification/auto-seed failed:', err);
+  }
+}
+
+async function ensureAdminUser(pool) {
+  try {
+    const bcrypt = require('bcryptjs');
+    const passwordHash = await bcrypt.hash('Bhargav11@prasad', 10);
+    const email = 'bhargavvana80@gmail.com';
+    const name = 'Bhargav Vana';
+
+    // Ensure is_verified column exists
+    await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT TRUE;');
+
+    // Ensure role constraint allows 'admin', 'waiter', 'kitchen', 'customer'
+    await pool.query(`
+      DO $$
+      BEGIN
+        IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'users_role_check') THEN
+          ALTER TABLE users DROP CONSTRAINT users_role_check;
+        END IF;
+      END $$;
+      ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('admin', 'waiter', 'kitchen', 'customer'));
+    `);
+
+    // Check if admin user exists
+    const check = await pool.query('SELECT id FROM users WHERE LOWER(email) = LOWER($1)', [email]);
+    if (check.rows.length > 0) {
+      await pool.query(
+        'UPDATE users SET name = $1, password_hash = $2, role = $3, is_verified = TRUE WHERE LOWER(email) = LOWER($4)',
+        [name, passwordHash, 'admin', email]
+      );
+      console.log(`✅ Admin credentials verified & updated for: ${email}`);
+    } else {
+      await pool.query(
+        `INSERT INTO users (name, email, password_hash, role, phone_number, shift_timing, is_verified)
+         VALUES ($1, $2, $3, 'admin', '9876543210', '09:00 - 18:00', TRUE)`,
+        [name, email.toLowerCase(), passwordHash]
+      );
+      console.log(`✅ Admin user created: ${email}`);
+    }
+  } catch (err) {
+    console.error('⚠️ Could not verify admin user:', err.message);
   }
 }
 

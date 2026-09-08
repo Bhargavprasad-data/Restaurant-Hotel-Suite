@@ -110,6 +110,12 @@ const AdminDashboard = () => {
       setRefreshing(false);
     } catch (err) {
       console.error('Dashboard fetch error:', err);
+      if (err.isAuthError || err.message?.includes('unauthorized') || err.message?.includes('Session expired')) {
+        setError('Session expired or unauthorized. Please log in again.');
+        setLoading(false);
+        setRefreshing(false);
+        return; // Do NOT retry when authentication fails
+      }
       setError('Failed to load dashboard data. Retrying connection to backend...');
       setLoading(true); // Retain loading shell when backend is offline
       setRefreshing(false);

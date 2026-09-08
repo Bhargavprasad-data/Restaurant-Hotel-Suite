@@ -141,7 +141,10 @@ export const AuthProvider = ({ children }) => {
 
     if (response.status === 401 || response.status === 403) {
       logout();
-      throw new Error('Session expired. Please log in again.');
+      const authError = new Error('Session expired. Please log in again.');
+      authError.isAuthError = true;
+      authError.status = response.status;
+      throw authError;
     }
 
     const contentType = response.headers.get('content-type');

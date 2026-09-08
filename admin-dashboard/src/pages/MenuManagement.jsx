@@ -59,8 +59,13 @@ const MenuManagement = () => {
       setError(null);
       setLoading(false); // Success! Hide loading skeleton
     } catch (err) {
-      console.error('Menu fetch failure:', err);
-      setError('Failed to fetch menu items. Retrying connection to backend...');
+      console.error('Menu fetch error:', err);
+      if (err.isAuthError || err.message?.includes('unauthorized') || err.message?.includes('Session expired')) {
+        setError('Session expired or unauthorized. Please log in again.');
+        setLoading(false);
+        return;
+      }
+      setError('Failed to load restaurant menu. Retrying connection to backend...');
       setLoading(true); // Retain loading shell when backend is offline
       
       // Auto-retry in 3 seconds to check if backend came online

@@ -38,6 +38,11 @@ const TableManagement = () => {
       setLoading(false); // Success! Hide loading skeleton
     } catch (err) {
       console.error('Tables fetch failure:', err);
+      if (err.isAuthError || err.message?.includes('unauthorized') || err.message?.includes('Session expired')) {
+        setError('Session expired or unauthorized. Please log in again.');
+        setLoading(false);
+        return;
+      }
       setError('Failed to fetch restaurant tables. Retrying connection to backend...');
       setLoading(true); // Retain loading shell when backend is offline
       
