@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }) => {
 
     const data = await res.json();
     if (!res.ok) {
-      if (res.status === 401 || res.status === 403) {
+      if (res.status === 401) {
         logout();
       }
       throw new Error(data.error || 'API Request failed.');
