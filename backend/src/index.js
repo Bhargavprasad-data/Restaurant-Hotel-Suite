@@ -129,48 +129,39 @@ async function ensureAdminUser(pool) {
     const email = 'bhargavvana80@gmail.com';
     const name = 'Bhargav Vana';
 
-    // Ensure is_verified column exists
-    await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT TRUE;');
+    // Update existing user to admin with correct password
+    const updateResult = await pool.query(
+      `UPDATE users 
+       SET name = $1, password_hash = $2, role = 'admin', is_verified = TRUE 
+       WHERE LOWER(TRIM(email)) = LOWER(TRIM($3)) 
+       RETURNING id, role`,
+      [name, passwordHash, email]
+    );
 
-    // Ensure role constraint allows 'admin', 'waiter', 'kitchen', 'customer'
-    await pool.query(`
-      DO $$
-      BEGIN
-        IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'users_role_check') THEN
-          ALTER TABLE users DROP CONSTRAINT users_role_check;
-        END IF;
-      END $$;
-      ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('admin', 'waiter', 'kitchen', 'customer'));
-    `);
-
-    // Check if admin user exists
-    const check = await pool.query('SELECT id FROM users WHERE LOWER(email) = LOWER($1)', [email]);
-    if (check.rows.length > 0) {
-      await pool.query(
-        'UPDATE users SET name = $1, password_hash = $2, role = $3, is_verified = TRUE WHERE LOWER(email) = LOWER($4)',
-        [name, passwordHash, 'admin', email]
-      );
-      console.log(`✅ Admin credentials verified & updated for: ${email}`);
+    if (updateResult.rowCount > 0) {
+      console.log(`✅ Admin credentials guaranteed for: ${email}`);
     } else {
       await pool.query(
         `INSERT INTO users (name, email, password_hash, role, phone_number, shift_timing, is_verified)
-         VALUES ($1, $2, $3, 'admin', '9876543210', '09:00 - 18:00', TRUE)`,
-        [name, email.toLowerCase(), passwordHash]
+         VALUES ($1, $2, $3, 'admin', '9876543210', '09:00 - 18:00', TRUE)
+         ON CONFLICT (email) DO UPDATE 
+         SET password_hash = EXCLUDED.password_hash, role = 'admin', is_verified = TRUE`,
+        [name, email.toLowerCase().trim(), passwordHash]
       );
-      console.log(`✅ Admin user created: ${email}`);
+      console.log(`✅ Admin user created/upserted: ${email}`);
     }
   } catch (err) {
     console.error('⚠️ Could not verify admin user:', err.message);
   }
 }
 
-// Launch server
+// Launch server immediately so Render port binding succeeds instantly
 const PORT = process.env.PORT || 5000;
-autoSeedDatabase().then(() => {
-  server.listen(PORT, () => {
-    console.log(`🚀 Smart Restaurant Backend running on http://localhost:${PORT}`);
-    startCheckoutScheduler(io);
-  });
+server.listen(PORT, () => {
+  console.log(`🚀 Smart Restaurant Backend running on http://localhost:${PORT}`);
+  startCheckoutScheduler(io);
+  // Run background verification asynchronously without blocking server port
+  autoSeedDatabase().catch(err => console.error('❌ Background DB seed/migration error:', err));
 });
 
 server.on('error', (err) => {
