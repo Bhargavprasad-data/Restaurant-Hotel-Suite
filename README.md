@@ -608,11 +608,9 @@ For issues or questions:
 5. Ensure all environment variables are set correctly
 
 ## 📄 License
-
 ISC
 
 ## 👥 Development Team
-
 Antigravity
 
 ---
