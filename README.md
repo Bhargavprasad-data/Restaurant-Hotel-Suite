@@ -337,29 +337,29 @@ H & R/
 ## 🛠️ Technologies Used
 
 ### Frontend
-- **React 18.3**: UI library
-- **Vite 5.2**: Build tool and dev server
-- **React Router DOM 6.23**: Client-side routing
-- **Axios 1.6-1.13**: HTTP client
-- **Socket.IO Client 4.7-4.8**: Real-time WebSocket
-- **Lucide React**: Icon library
-- **Framer Motion**: Animation library
-- **React Hot Toast**: Toast notifications
-- **Tailwind CSS**: Utility-first CSS framework (hotel apps)
+- **React 18.3**: UI library.
+- **Vite 5.2**: Build tool and dev server.
+- **React Router DOM 6.23**: Client-side routing.
+- **Axios 1.6-1.13**: HTTP client.
+- **Socket.IO Client 4.7-4.8**: Real-time WebSocket.
+- **Lucide React**: Icon library.
+- **Framer Motion**: Animation library.
+- **React Hot Toast**: Toast notifications.
+- **Tailwind CSS**: Utility-first CSS framework (hotel apps).
 
 ### Backend
-- **Node.js**: JavaScript runtime
-- **Express 4.19**: Web framework
-- **PostgreSQL 8.11**: Relational database
-- **Socket.IO 4.7**: Real-time bidirectional communication
-- **JWT (jsonwebtoken)**: Authentication tokens
-- **bcryptjs**: Password hashing
-- **Nodemailer 8.0**: Email service
-- **Twilio 5.0**: SMS service
-- **Razorpay 2.9**: Payment gateway
-- **dotenv**: Environment variable management
-- **CORS**: Cross-origin resource sharing
-- **Nodemon**: Development auto-reload
+- **Node.js**: JavaScript runtime.
+- **Express 4.19**: Web framework.
+- **PostgreSQL 8.11**: Relational database.
+- **Socket.IO 4.7**: Real-time bidirectional communication.
+- **JWT (jsonwebtoken)**: Authentication tokens.
+- **bcryptjs**: Password hashing.
+- **Nodemailer 8.0**: Email service.
+- **Twilio 5.0**: SMS service.
+- **Razorpay 2.9**: Payment gateway.
+- **dotenv**: Environment variable management.
+- **CORS**: Cross-origin resource sharing.
+- **Nodemon**: Development auto-reload.
 
 ## ✨ Features
 
