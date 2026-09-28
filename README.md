@@ -22,11 +22,11 @@ A comprehensive, real-time hotel and restaurant management system with multiple 
 
 H & R is a full-stack, real-time management platform designed to streamline operations for hotels and restaurants. It provides separate interfaces for different user roles:
 
-- **Restaurant Admin**: Manage tables, menus, staff, and orders
-- **Hotel Admin**: Manage rooms, bookings, guests, and payments
-- **Kitchen Staff**: View and manage orders in real-time
-- **Waiters**: Process orders, manage tables
-- **Hotel Guests**: Browse rooms, make bookings, track reservations
+- **Restaurant Admin**: Manage tables, menus, staff, and orders.
+- **Hotel Admin**: Manage rooms, bookings, guests, and payments.
+- **Kitchen Staff**: View and manage orders in real-time.
+- **Waiters**: Process orders, manage tables.
+- **Hotel Guests**: Browse rooms, make bookings, track reservations.
 
 The system uses WebSocket technology for real-time updates across all dashboards and integrates with payment gateways and communication services.
 
