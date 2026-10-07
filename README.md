@@ -601,11 +601,11 @@ cd backend && node test_api.js
 ## 📞 Support
 
 For issues or questions:
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Review error logs in the terminal
-3. Check browser console for frontend errors
-4. Verify database connection and migrations
-5. Ensure all environment variables are set correctly
+1. Check the [Troubleshooting](#troubleshooting) section.
+2. Review error logs in the terminal.
+3. Check browser console for frontend errors.
+4. Verify database connection and migrations.
+5. Ensure all environment variables are set correctly.
 
 ## 📄 License
 ISC
