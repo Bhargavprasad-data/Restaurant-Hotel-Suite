@@ -4,7 +4,7 @@ A comprehensive, real-time hotel and restaurant management system with multiple 
 
 ## 📋 Table of Contents
   
-- [Overview](#overview)
+- [Overview](#overview) 
 - [Architecture](#architecture)
 - [System Requirements](#system-requirements)
 - [Installation & Setup](#installation--setup)
