@@ -3,7 +3,7 @@
 A comprehensive, real-time hotel and restaurant management system with multiple dashboards for administrators, staff, and customers.
 
 ## 📋 Table of Contents
- 
+  
 - [Overview](#overview)
 - [Architecture](#architecture)
 - [System Requirements](#system-requirements)
